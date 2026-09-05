@@ -1,0 +1,29 @@
+{
+  "testedAt": "2026-09-04T23:35:08.105Z",
+  "results": [
+    {
+      "browser": "chromium",
+      "mobile": false,
+      "errors": []
+    },
+    {
+      "browser": "chromium",
+      "mobile": true,
+      "errors": []
+    },
+    {
+      "browser": "firefox",
+      "unavailable": "Error: browserType.launch: spawn UNKNOWN"
+    },
+    {
+      "browser": "webkit",
+      "mobile": false,
+      "errors": []
+    },
+    {
+      "browser": "webkit",
+      "mobile": true,
+      "errors": []
+    }
+  ]
+}

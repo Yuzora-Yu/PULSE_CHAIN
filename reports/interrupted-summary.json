@@ -1,0 +1,20 @@
+{
+  "status": "stopped-at-user-request",
+  "stoppedAt": "2026-09-05T00:14:41.211Z",
+  "complete": false,
+  "completedCsvRows": {
+    "solver": {
+      "rows": 66666,
+      "statuses": {
+        "solved": 56806,
+        "solver-budget": 9860
+      }
+    },
+    "safety": {
+      "rows": 0,
+      "statuses": {}
+    }
+  },
+  "safetyProgressLowerBound": 890000,
+  "note": "Partial run only. Unflushed worker results are not represented. No complete 100k/1m release pass is claimed."
+}

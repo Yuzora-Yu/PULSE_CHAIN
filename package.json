@@ -1,0 +1,30 @@
+{
+  "name": "pulse-chain",
+  "version": "1.0.0-rc.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build && node scripts/package.mjs",
+    "preview": "vite preview --host 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "qa": "tsx scripts/qa.ts",
+    "regression": "tsx scripts/regression.ts",
+    "catalogue": "tsx scripts/catalogue.ts",
+    "test:browser": "node scripts/browser-smoke.mjs",
+    "format": "prettier --write src tests/*.ts scripts *.json *.ts *.html .github/workflows/*.yml",
+    "format:check": "prettier --check src tests/*.ts scripts *.json *.ts *.html .github/workflows/*.yml",
+    "deploy:check": "npm run build && wrangler deploy --dry-run --env production",
+    "deploy": "npm run build && wrangler deploy --env production"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.3.0",
+    "prettier": "^3.9.6",
+    "tsx": "^4.20.5",
+    "typescript": "~5.9.3",
+    "vite": "^7.1.0",
+    "wrangler": "^4.129.0"
+  }
+}

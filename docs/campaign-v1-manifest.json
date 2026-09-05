@@ -1,0 +1,1807 @@
+{
+  "ruleVersion": 1,
+  "generatorVersion": 1,
+  "review": "solver-certified; human playtest pending",
+  "entries": [
+    {
+      "stage": 1,
+      "attempt": 0,
+      "par": 1,
+      "hash": 2112008858
+    },
+    {
+      "stage": 2,
+      "attempt": 0,
+      "par": 1,
+      "hash": 3177995514
+    },
+    {
+      "stage": 3,
+      "attempt": 0,
+      "par": 1,
+      "hash": 4102688180
+    },
+    {
+      "stage": 4,
+      "attempt": 0,
+      "par": 1,
+      "hash": 1035603222
+    },
+    {
+      "stage": 5,
+      "attempt": 0,
+      "par": 1,
+      "hash": 3864959443
+    },
+    {
+      "stage": 6,
+      "attempt": 1,
+      "par": 1,
+      "hash": 179865144
+    },
+    {
+      "stage": 7,
+      "attempt": 1,
+      "par": 1,
+      "hash": 3291432612
+    },
+    {
+      "stage": 8,
+      "attempt": 0,
+      "par": 1,
+      "hash": 3396713677
+    },
+    {
+      "stage": 9,
+      "attempt": 0,
+      "par": 1,
+      "hash": 304797860
+    },
+    {
+      "stage": 10,
+      "attempt": 0,
+      "par": 1,
+      "hash": 330302578
+    },
+    {
+      "stage": 11,
+      "attempt": 0,
+      "par": 1,
+      "hash": 555745420
+    },
+    {
+      "stage": 12,
+      "attempt": 8,
+      "par": 1,
+      "hash": 322464476
+    },
+    {
+      "stage": 13,
+      "attempt": 3,
+      "par": 1,
+      "hash": 3627179500
+    },
+    {
+      "stage": 14,
+      "attempt": 1,
+      "par": 1,
+      "hash": 1198607224
+    },
+    {
+      "stage": 15,
+      "attempt": 5,
+      "par": 1,
+      "hash": 24223222
+    },
+    {
+      "stage": 16,
+      "attempt": 9,
+      "par": 1,
+      "hash": 3918555631
+    },
+    {
+      "stage": 17,
+      "attempt": 3,
+      "par": 1,
+      "hash": 617077402
+    },
+    {
+      "stage": 18,
+      "attempt": 3,
+      "par": 1,
+      "hash": 2125108569
+    },
+    {
+      "stage": 19,
+      "attempt": 5,
+      "par": 1,
+      "hash": 4132312731
+    },
+    {
+      "stage": 20,
+      "attempt": 0,
+      "par": 1,
+      "hash": 720807595
+    },
+    {
+      "stage": 21,
+      "attempt": 0,
+      "par": 1,
+      "hash": 2737009183
+    },
+    {
+      "stage": 22,
+      "attempt": 10,
+      "par": 1,
+      "hash": 4057515726
+    },
+    {
+      "stage": 23,
+      "attempt": 0,
+      "par": 2,
+      "hash": 1357373003
+    },
+    {
+      "stage": 24,
+      "attempt": 4,
+      "par": 2,
+      "hash": 1864380019
+    },
+    {
+      "stage": 25,
+      "attempt": 1,
+      "par": 2,
+      "hash": 2784554466
+    },
+    {
+      "stage": 26,
+      "attempt": 0,
+      "par": 2,
+      "hash": 3920961000
+    },
+    {
+      "stage": 27,
+      "attempt": 2,
+      "par": 1,
+      "hash": 140304568
+    },
+    {
+      "stage": 28,
+      "attempt": 5,
+      "par": 2,
+      "hash": 3873135467
+    },
+    {
+      "stage": 29,
+      "attempt": 10,
+      "par": 2,
+      "hash": 357136534
+    },
+    {
+      "stage": 30,
+      "attempt": 9,
+      "par": 1,
+      "hash": 517363201
+    },
+    {
+      "stage": 31,
+      "attempt": 1,
+      "par": 2,
+      "hash": 3949429885
+    },
+    {
+      "stage": 32,
+      "attempt": 5,
+      "par": 2,
+      "hash": 1028564923
+    },
+    {
+      "stage": 33,
+      "attempt": 8,
+      "par": 2,
+      "hash": 3871161254
+    },
+    {
+      "stage": 34,
+      "attempt": 5,
+      "par": 2,
+      "hash": 2422726298
+    },
+    {
+      "stage": 35,
+      "attempt": 3,
+      "par": 1,
+      "hash": 2912312715
+    },
+    {
+      "stage": 36,
+      "attempt": 1,
+      "par": 1,
+      "hash": 2935010904
+    },
+    {
+      "stage": 37,
+      "attempt": 9,
+      "par": 2,
+      "hash": 1618948611
+    },
+    {
+      "stage": 38,
+      "attempt": 3,
+      "par": 2,
+      "hash": 3276885852
+    },
+    {
+      "stage": 39,
+      "attempt": 9,
+      "par": 2,
+      "hash": 1718979243
+    },
+    {
+      "stage": 40,
+      "attempt": 4,
+      "par": 1,
+      "hash": 1257690169
+    },
+    {
+      "stage": 41,
+      "attempt": 8,
+      "par": 2,
+      "hash": 1649783687
+    },
+    {
+      "stage": 42,
+      "attempt": 1,
+      "par": 2,
+      "hash": 4074717659
+    },
+    {
+      "stage": 43,
+      "attempt": 2,
+      "par": 2,
+      "hash": 2256967732
+    },
+    {
+      "stage": 44,
+      "attempt": 7,
+      "par": 1,
+      "hash": 2428477991
+    },
+    {
+      "stage": 45,
+      "attempt": 1,
+      "par": 1,
+      "hash": 3739058704
+    },
+    {
+      "stage": 46,
+      "attempt": 10,
+      "par": 1,
+      "hash": 3255370047
+    },
+    {
+      "stage": 47,
+      "attempt": 0,
+      "par": 2,
+      "hash": 4231079357
+    },
+    {
+      "stage": 48,
+      "attempt": 4,
+      "par": 2,
+      "hash": 687741803
+    },
+    {
+      "stage": 49,
+      "attempt": 1,
+      "par": 2,
+      "hash": 625633607
+    },
+    {
+      "stage": 50,
+      "attempt": 0,
+      "par": 1,
+      "hash": 419848191
+    },
+    {
+      "stage": 51,
+      "attempt": 0,
+      "par": 1,
+      "hash": 4151711277
+    },
+    {
+      "stage": 52,
+      "attempt": 5,
+      "par": 2,
+      "hash": 3393707284
+    },
+    {
+      "stage": 53,
+      "attempt": 1,
+      "par": 2,
+      "hash": 3172767737
+    },
+    {
+      "stage": 54,
+      "attempt": 5,
+      "par": 2,
+      "hash": 499412160
+    },
+    {
+      "stage": 55,
+      "attempt": 2,
+      "par": 2,
+      "hash": 1938414366
+    },
+    {
+      "stage": 56,
+      "attempt": 1,
+      "par": 2,
+      "hash": 2126548074
+    },
+    {
+      "stage": 57,
+      "attempt": 3,
+      "par": 2,
+      "hash": 3399494755
+    },
+    {
+      "stage": 58,
+      "attempt": 8,
+      "par": 2,
+      "hash": 1701662415
+    },
+    {
+      "stage": 59,
+      "attempt": 8,
+      "par": 2,
+      "hash": 1922976269
+    },
+    {
+      "stage": 60,
+      "attempt": 2,
+      "par": 1,
+      "hash": 4131839401
+    },
+    {
+      "stage": 61,
+      "attempt": 1,
+      "par": 2,
+      "hash": 2780998950
+    },
+    {
+      "stage": 62,
+      "attempt": 10,
+      "par": 2,
+      "hash": 2826639305
+    },
+    {
+      "stage": 63,
+      "attempt": 3,
+      "par": 2,
+      "hash": 469072145
+    },
+    {
+      "stage": 64,
+      "attempt": 0,
+      "par": 2,
+      "hash": 3489731133
+    },
+    {
+      "stage": 65,
+      "attempt": 4,
+      "par": 2,
+      "hash": 3029565804
+    },
+    {
+      "stage": 66,
+      "attempt": 4,
+      "par": 2,
+      "hash": 1370176146
+    },
+    {
+      "stage": 67,
+      "attempt": 6,
+      "par": 2,
+      "hash": 189314932
+    },
+    {
+      "stage": 68,
+      "attempt": 0,
+      "par": 2,
+      "hash": 217487053
+    },
+    {
+      "stage": 69,
+      "attempt": 11,
+      "par": 2,
+      "hash": 3572091600
+    },
+    {
+      "stage": 70,
+      "attempt": 8,
+      "par": 1,
+      "hash": 1311555103
+    },
+    {
+      "stage": 71,
+      "attempt": 5,
+      "par": 2,
+      "hash": 552228284
+    },
+    {
+      "stage": 72,
+      "attempt": 6,
+      "par": 2,
+      "hash": 2426290270
+    },
+    {
+      "stage": 73,
+      "attempt": 2,
+      "par": 2,
+      "hash": 3664250996
+    },
+    {
+      "stage": 74,
+      "attempt": 3,
+      "par": 2,
+      "hash": 2872671064
+    },
+    {
+      "stage": 75,
+      "attempt": 6,
+      "par": 2,
+      "hash": 2655070140
+    },
+    {
+      "stage": 76,
+      "attempt": 1,
+      "par": 2,
+      "hash": 593559812
+    },
+    {
+      "stage": 77,
+      "attempt": 5,
+      "par": 2,
+      "hash": 2001232747
+    },
+    {
+      "stage": 78,
+      "attempt": 1,
+      "par": 2,
+      "hash": 1562334518
+    },
+    {
+      "stage": 79,
+      "attempt": 1,
+      "par": 2,
+      "hash": 1980068615
+    },
+    {
+      "stage": 80,
+      "attempt": 0,
+      "par": 1,
+      "hash": 4186520685
+    },
+    {
+      "stage": 81,
+      "attempt": 1,
+      "par": 2,
+      "hash": 1514104775
+    },
+    {
+      "stage": 82,
+      "attempt": 4,
+      "par": 2,
+      "hash": 3927934761
+    },
+    {
+      "stage": 83,
+      "attempt": 7,
+      "par": 3,
+      "hash": 3299456716
+    },
+    {
+      "stage": 84,
+      "attempt": 9,
+      "par": 3,
+      "hash": 675574768
+    },
+    {
+      "stage": 85,
+      "attempt": 6,
+      "par": 3,
+      "hash": 726694078
+    },
+    {
+      "stage": 86,
+      "attempt": 8,
+      "par": 3,
+      "hash": 381663912
+    },
+    {
+      "stage": 87,
+      "attempt": 5,
+      "par": 3,
+      "hash": 2827114038
+    },
+    {
+      "stage": 88,
+      "attempt": 7,
+      "par": 3,
+      "hash": 3702893865
+    },
+    {
+      "stage": 89,
+      "attempt": 3,
+      "par": 3,
+      "hash": 2065705727
+    },
+    {
+      "stage": 90,
+      "attempt": 8,
+      "par": 1,
+      "hash": 151926946
+    },
+    {
+      "stage": 91,
+      "attempt": 0,
+      "par": 1,
+      "hash": 2940479034
+    },
+    {
+      "stage": 92,
+      "attempt": 7,
+      "par": 2,
+      "hash": 2374853068
+    },
+    {
+      "stage": 93,
+      "attempt": 9,
+      "par": 3,
+      "hash": 167026958
+    },
+    {
+      "stage": 94,
+      "attempt": 7,
+      "par": 3,
+      "hash": 1154103170
+    },
+    {
+      "stage": 95,
+      "attempt": 9,
+      "par": 3,
+      "hash": 139253411
+    },
+    {
+      "stage": 96,
+      "attempt": 10,
+      "par": 3,
+      "hash": 3691415380
+    },
+    {
+      "stage": 97,
+      "attempt": 6,
+      "par": 3,
+      "hash": 474578341
+    },
+    {
+      "stage": 98,
+      "attempt": 3,
+      "par": 3,
+      "hash": 4133461990
+    },
+    {
+      "stage": 99,
+      "attempt": 9,
+      "par": 3,
+      "hash": 1920188041
+    },
+    {
+      "stage": 100,
+      "attempt": 0,
+      "par": 1,
+      "hash": 804371318
+    },
+    {
+      "stage": 101,
+      "attempt": 10,
+      "par": 2,
+      "hash": 3825684554
+    },
+    {
+      "stage": 102,
+      "attempt": 10,
+      "par": 2,
+      "hash": 3327138306
+    },
+    {
+      "stage": 103,
+      "attempt": 7,
+      "par": 3,
+      "hash": 4158969812
+    },
+    {
+      "stage": 104,
+      "attempt": 9,
+      "par": 3,
+      "hash": 1947506527
+    },
+    {
+      "stage": 105,
+      "attempt": 8,
+      "par": 3,
+      "hash": 2111065592
+    },
+    {
+      "stage": 106,
+      "attempt": 2,
+      "par": 3,
+      "hash": 3840838306
+    },
+    {
+      "stage": 107,
+      "attempt": 3,
+      "par": 3,
+      "hash": 246753972
+    },
+    {
+      "stage": 108,
+      "attempt": 10,
+      "par": 3,
+      "hash": 3251935390
+    },
+    {
+      "stage": 109,
+      "attempt": 6,
+      "par": 3,
+      "hash": 2132682373
+    },
+    {
+      "stage": 110,
+      "attempt": 5,
+      "par": 1,
+      "hash": 1469351932
+    },
+    {
+      "stage": 111,
+      "attempt": 1,
+      "par": 2,
+      "hash": 1060296802
+    },
+    {
+      "stage": 112,
+      "attempt": 6,
+      "par": 2,
+      "hash": 2014546334
+    },
+    {
+      "stage": 113,
+      "attempt": 10,
+      "par": 3,
+      "hash": 1149703448
+    },
+    {
+      "stage": 114,
+      "attempt": 4,
+      "par": 3,
+      "hash": 1785977119
+    },
+    {
+      "stage": 115,
+      "attempt": 7,
+      "par": 3,
+      "hash": 1431674512
+    },
+    {
+      "stage": 116,
+      "attempt": 1,
+      "par": 3,
+      "hash": 2707072497
+    },
+    {
+      "stage": 117,
+      "attempt": 6,
+      "par": 3,
+      "hash": 3626794533
+    },
+    {
+      "stage": 118,
+      "attempt": 1,
+      "par": 3,
+      "hash": 604518102
+    },
+    {
+      "stage": 119,
+      "attempt": 11,
+      "par": 3,
+      "hash": 509145669
+    },
+    {
+      "stage": 120,
+      "attempt": 6,
+      "par": 1,
+      "hash": 3840757300
+    },
+    {
+      "stage": 121,
+      "attempt": 4,
+      "par": 2,
+      "hash": 3391447493
+    },
+    {
+      "stage": 122,
+      "attempt": 1,
+      "par": 2,
+      "hash": 432299257
+    },
+    {
+      "stage": 123,
+      "attempt": 6,
+      "par": 3,
+      "hash": 266709717
+    },
+    {
+      "stage": 124,
+      "attempt": 0,
+      "par": 3,
+      "hash": 2917451991
+    },
+    {
+      "stage": 125,
+      "attempt": 1,
+      "par": 3,
+      "hash": 2230476632
+    },
+    {
+      "stage": 126,
+      "attempt": 11,
+      "par": 3,
+      "hash": 131511194
+    },
+    {
+      "stage": 127,
+      "attempt": 1,
+      "par": 3,
+      "hash": 2441682588
+    },
+    {
+      "stage": 128,
+      "attempt": 9,
+      "par": 3,
+      "hash": 1337020461
+    },
+    {
+      "stage": 129,
+      "attempt": 11,
+      "par": 3,
+      "hash": 1309897193
+    },
+    {
+      "stage": 130,
+      "attempt": 8,
+      "par": 1,
+      "hash": 2154198032
+    },
+    {
+      "stage": 131,
+      "attempt": 7,
+      "par": 2,
+      "hash": 362205064
+    },
+    {
+      "stage": 132,
+      "attempt": 7,
+      "par": 2,
+      "hash": 1813304593
+    },
+    {
+      "stage": 133,
+      "attempt": 8,
+      "par": 3,
+      "hash": 558897031
+    },
+    {
+      "stage": 134,
+      "attempt": 5,
+      "par": 3,
+      "hash": 2314796012
+    },
+    {
+      "stage": 135,
+      "attempt": 3,
+      "par": 3,
+      "hash": 2466565309
+    },
+    {
+      "stage": 136,
+      "attempt": 6,
+      "par": 3,
+      "hash": 2145468093
+    },
+    {
+      "stage": 137,
+      "attempt": 10,
+      "par": 3,
+      "hash": 17216013
+    },
+    {
+      "stage": 138,
+      "attempt": 5,
+      "par": 3,
+      "hash": 3704765107
+    },
+    {
+      "stage": 139,
+      "attempt": 6,
+      "par": 3,
+      "hash": 1694942477
+    },
+    {
+      "stage": 140,
+      "attempt": 10,
+      "par": 1,
+      "hash": 205764719
+    },
+    {
+      "stage": 141,
+      "attempt": 0,
+      "par": 1,
+      "hash": 2452124175
+    },
+    {
+      "stage": 142,
+      "attempt": 8,
+      "par": 2,
+      "hash": 273219753
+    },
+    {
+      "stage": 143,
+      "attempt": 4,
+      "par": 3,
+      "hash": 40871189
+    },
+    {
+      "stage": 144,
+      "attempt": 0,
+      "par": 3,
+      "hash": 3968820709
+    },
+    {
+      "stage": 145,
+      "attempt": 4,
+      "par": 3,
+      "hash": 728475157
+    },
+    {
+      "stage": 146,
+      "attempt": 11,
+      "par": 3,
+      "hash": 1347318445
+    },
+    {
+      "stage": 147,
+      "attempt": 10,
+      "par": 3,
+      "hash": 708129267
+    },
+    {
+      "stage": 148,
+      "attempt": 9,
+      "par": 3,
+      "hash": 2898031825
+    },
+    {
+      "stage": 149,
+      "attempt": 1,
+      "par": 3,
+      "hash": 3501796605
+    },
+    {
+      "stage": 150,
+      "attempt": 0,
+      "par": 1,
+      "hash": 2762946722
+    },
+    {
+      "stage": 151,
+      "attempt": 1,
+      "par": 2,
+      "hash": 2292309661
+    },
+    {
+      "stage": 152,
+      "attempt": 10,
+      "par": 2,
+      "hash": 1316700375
+    },
+    {
+      "stage": 153,
+      "attempt": 11,
+      "par": 3,
+      "hash": 4073006172
+    },
+    {
+      "stage": 154,
+      "attempt": 3,
+      "par": 3,
+      "hash": 1534429392
+    },
+    {
+      "stage": 155,
+      "attempt": 3,
+      "par": 3,
+      "hash": 2386582503
+    },
+    {
+      "stage": 156,
+      "attempt": 1,
+      "par": 3,
+      "hash": 1242198117
+    },
+    {
+      "stage": 157,
+      "attempt": 3,
+      "par": 3,
+      "hash": 308243435
+    },
+    {
+      "stage": 158,
+      "attempt": 10,
+      "par": 3,
+      "hash": 2770481722
+    },
+    {
+      "stage": 159,
+      "attempt": 5,
+      "par": 3,
+      "hash": 725290271
+    },
+    {
+      "stage": 160,
+      "attempt": 1,
+      "par": 1,
+      "hash": 1439177603
+    },
+    {
+      "stage": 161,
+      "attempt": 10,
+      "par": 2,
+      "hash": 1983307706
+    },
+    {
+      "stage": 162,
+      "attempt": 8,
+      "par": 2,
+      "hash": 3497463390
+    },
+    {
+      "stage": 163,
+      "attempt": 4,
+      "par": 3,
+      "hash": 1946425850
+    },
+    {
+      "stage": 164,
+      "attempt": 8,
+      "par": 3,
+      "hash": 349329910
+    },
+    {
+      "stage": 165,
+      "attempt": 2,
+      "par": 3,
+      "hash": 1918676846
+    },
+    {
+      "stage": 166,
+      "attempt": 10,
+      "par": 3,
+      "hash": 1164733889
+    },
+    {
+      "stage": 167,
+      "attempt": 5,
+      "par": 3,
+      "hash": 2548936761
+    },
+    {
+      "stage": 168,
+      "attempt": 1,
+      "par": 3,
+      "hash": 3442726072
+    },
+    {
+      "stage": 169,
+      "attempt": 0,
+      "par": 3,
+      "hash": 2028475616
+    },
+    {
+      "stage": 170,
+      "attempt": 3,
+      "par": 1,
+      "hash": 880862185
+    },
+    {
+      "stage": 171,
+      "attempt": 4,
+      "par": 2,
+      "hash": 74648315
+    },
+    {
+      "stage": 172,
+      "attempt": 1,
+      "par": 2,
+      "hash": 2931939563
+    },
+    {
+      "stage": 173,
+      "attempt": 11,
+      "par": 3,
+      "hash": 295284472
+    },
+    {
+      "stage": 174,
+      "attempt": 9,
+      "par": 3,
+      "hash": 1958905567
+    },
+    {
+      "stage": 175,
+      "attempt": 10,
+      "par": 3,
+      "hash": 1842854005
+    },
+    {
+      "stage": 176,
+      "attempt": 11,
+      "par": 3,
+      "hash": 115753761
+    },
+    {
+      "stage": 177,
+      "attempt": 3,
+      "par": 3,
+      "hash": 3395794828
+    },
+    {
+      "stage": 178,
+      "attempt": 10,
+      "par": 3,
+      "hash": 3939519477
+    },
+    {
+      "stage": 179,
+      "attempt": 6,
+      "par": 3,
+      "hash": 2679138655
+    },
+    {
+      "stage": 180,
+      "attempt": 10,
+      "par": 1,
+      "hash": 4211820261
+    },
+    {
+      "stage": 181,
+      "attempt": 5,
+      "par": 2,
+      "hash": 2899744995
+    },
+    {
+      "stage": 182,
+      "attempt": 9,
+      "par": 2,
+      "hash": 2386556046
+    },
+    {
+      "stage": 183,
+      "attempt": 6,
+      "par": 3,
+      "hash": 4147520669
+    },
+    {
+      "stage": 184,
+      "attempt": 7,
+      "par": 3,
+      "hash": 2743678687
+    },
+    {
+      "stage": 185,
+      "attempt": 2,
+      "par": 3,
+      "hash": 4010253328
+    },
+    {
+      "stage": 186,
+      "attempt": 2,
+      "par": 3,
+      "hash": 3881003612
+    },
+    {
+      "stage": 187,
+      "attempt": 3,
+      "par": 3,
+      "hash": 1244888220
+    },
+    {
+      "stage": 188,
+      "attempt": 7,
+      "par": 3,
+      "hash": 1782119593
+    },
+    {
+      "stage": 189,
+      "attempt": 1,
+      "par": 3,
+      "hash": 2786789731
+    },
+    {
+      "stage": 190,
+      "attempt": 3,
+      "par": 1,
+      "hash": 1685042744
+    },
+    {
+      "stage": 191,
+      "attempt": 4,
+      "par": 2,
+      "hash": 15897104
+    },
+    {
+      "stage": 192,
+      "attempt": 10,
+      "par": 2,
+      "hash": 4069908122
+    },
+    {
+      "stage": 193,
+      "attempt": 1,
+      "par": 3,
+      "hash": 3799541320
+    },
+    {
+      "stage": 194,
+      "attempt": 8,
+      "par": 3,
+      "hash": 1998069630
+    },
+    {
+      "stage": 195,
+      "attempt": 3,
+      "par": 3,
+      "hash": 4094305195
+    },
+    {
+      "stage": 196,
+      "attempt": 7,
+      "par": 3,
+      "hash": 416885179
+    },
+    {
+      "stage": 197,
+      "attempt": 4,
+      "par": 3,
+      "hash": 1601506436
+    },
+    {
+      "stage": 198,
+      "attempt": 7,
+      "par": 3,
+      "hash": 4240501823
+    },
+    {
+      "stage": 199,
+      "attempt": 3,
+      "par": 3,
+      "hash": 3491651145
+    },
+    {
+      "stage": 200,
+      "attempt": 0,
+      "par": 1,
+      "hash": 527660841
+    },
+    {
+      "stage": 201,
+      "attempt": 4,
+      "par": 2,
+      "hash": 510048671
+    },
+    {
+      "stage": 202,
+      "attempt": 3,
+      "par": 2,
+      "hash": 1474174930
+    },
+    {
+      "stage": 203,
+      "attempt": 4,
+      "par": 3,
+      "hash": 3357611007
+    },
+    {
+      "stage": 204,
+      "attempt": 9,
+      "par": 3,
+      "hash": 3081322489
+    },
+    {
+      "stage": 205,
+      "attempt": 10,
+      "par": 3,
+      "hash": 3207731432
+    },
+    {
+      "stage": 206,
+      "attempt": 6,
+      "par": 3,
+      "hash": 3602312254
+    },
+    {
+      "stage": 207,
+      "attempt": 11,
+      "par": 3,
+      "hash": 1097094182
+    },
+    {
+      "stage": 208,
+      "attempt": 10,
+      "par": 3,
+      "hash": 2808778486
+    },
+    {
+      "stage": 209,
+      "attempt": 2,
+      "par": 3,
+      "hash": 3628181888
+    },
+    {
+      "stage": 210,
+      "attempt": 10,
+      "par": 1,
+      "hash": 247530945
+    },
+    {
+      "stage": 211,
+      "attempt": 0,
+      "par": 1,
+      "hash": 2926930326
+    },
+    {
+      "stage": 212,
+      "attempt": 3,
+      "par": 2,
+      "hash": 568284822
+    },
+    {
+      "stage": 213,
+      "attempt": 1,
+      "par": 3,
+      "hash": 4234616813
+    },
+    {
+      "stage": 214,
+      "attempt": 0,
+      "par": 3,
+      "hash": 1436667804
+    },
+    {
+      "stage": 215,
+      "attempt": 4,
+      "par": 3,
+      "hash": 2121472221
+    },
+    {
+      "stage": 216,
+      "attempt": 6,
+      "par": 3,
+      "hash": 1647185660
+    },
+    {
+      "stage": 217,
+      "attempt": 2,
+      "par": 3,
+      "hash": 1574560592
+    },
+    {
+      "stage": 218,
+      "attempt": 8,
+      "par": 3,
+      "hash": 1810257576
+    },
+    {
+      "stage": 219,
+      "attempt": 5,
+      "par": 3,
+      "hash": 2158199293
+    },
+    {
+      "stage": 220,
+      "attempt": 1,
+      "par": 1,
+      "hash": 3375512094
+    },
+    {
+      "stage": 221,
+      "attempt": 9,
+      "par": 2,
+      "hash": 1692667616
+    },
+    {
+      "stage": 222,
+      "attempt": 7,
+      "par": 2,
+      "hash": 4225077033
+    },
+    {
+      "stage": 223,
+      "attempt": 6,
+      "par": 3,
+      "hash": 417357003
+    },
+    {
+      "stage": 224,
+      "attempt": 8,
+      "par": 3,
+      "hash": 4207997377
+    },
+    {
+      "stage": 225,
+      "attempt": 9,
+      "par": 3,
+      "hash": 1962858225
+    },
+    {
+      "stage": 226,
+      "attempt": 2,
+      "par": 3,
+      "hash": 1920475338
+    },
+    {
+      "stage": 227,
+      "attempt": 7,
+      "par": 3,
+      "hash": 1590569336
+    },
+    {
+      "stage": 228,
+      "attempt": 3,
+      "par": 3,
+      "hash": 2882564296
+    },
+    {
+      "stage": 229,
+      "attempt": 5,
+      "par": 3,
+      "hash": 3412778279
+    },
+    {
+      "stage": 230,
+      "attempt": 11,
+      "par": 1,
+      "hash": 717507727
+    },
+    {
+      "stage": 231,
+      "attempt": 6,
+      "par": 2,
+      "hash": 3986696013
+    },
+    {
+      "stage": 232,
+      "attempt": 4,
+      "par": 2,
+      "hash": 4222565059
+    },
+    {
+      "stage": 233,
+      "attempt": 1,
+      "par": 3,
+      "hash": 894499851
+    },
+    {
+      "stage": 234,
+      "attempt": 1,
+      "par": 3,
+      "hash": 396864652
+    },
+    {
+      "stage": 235,
+      "attempt": 2,
+      "par": 3,
+      "hash": 1007327198
+    },
+    {
+      "stage": 236,
+      "attempt": 11,
+      "par": 3,
+      "hash": 3089467668
+    },
+    {
+      "stage": 237,
+      "attempt": 10,
+      "par": 3,
+      "hash": 2177747682
+    },
+    {
+      "stage": 238,
+      "attempt": 3,
+      "par": 3,
+      "hash": 4275253689
+    },
+    {
+      "stage": 239,
+      "attempt": 11,
+      "par": 3,
+      "hash": 3415820867
+    },
+    {
+      "stage": 240,
+      "attempt": 0,
+      "par": 1,
+      "hash": 1858516883
+    },
+    {
+      "stage": 241,
+      "attempt": 11,
+      "par": 2,
+      "hash": 2279934618
+    },
+    {
+      "stage": 242,
+      "attempt": 7,
+      "par": 2,
+      "hash": 3515362288
+    },
+    {
+      "stage": 243,
+      "attempt": 11,
+      "par": 3,
+      "hash": 808947349
+    },
+    {
+      "stage": 244,
+      "attempt": 7,
+      "par": 3,
+      "hash": 930523558
+    },
+    {
+      "stage": 245,
+      "attempt": 5,
+      "par": 3,
+      "hash": 1807779325
+    },
+    {
+      "stage": 246,
+      "attempt": 2,
+      "par": 3,
+      "hash": 3666941869
+    },
+    {
+      "stage": 247,
+      "attempt": 11,
+      "par": 3,
+      "hash": 770932818
+    },
+    {
+      "stage": 248,
+      "attempt": 4,
+      "par": 3,
+      "hash": 98098739
+    },
+    {
+      "stage": 249,
+      "attempt": 1,
+      "par": 3,
+      "hash": 3244338516
+    },
+    {
+      "stage": 250,
+      "attempt": 0,
+      "par": 1,
+      "hash": 2273347641
+    },
+    {
+      "stage": 251,
+      "attempt": 0,
+      "par": 2,
+      "hash": 1699205830
+    },
+    {
+      "stage": 252,
+      "attempt": 1,
+      "par": 2,
+      "hash": 747072949
+    },
+    {
+      "stage": 253,
+      "attempt": 7,
+      "par": 3,
+      "hash": 1877473101
+    },
+    {
+      "stage": 254,
+      "attempt": 8,
+      "par": 3,
+      "hash": 1583786455
+    },
+    {
+      "stage": 255,
+      "attempt": 10,
+      "par": 3,
+      "hash": 1755681366
+    },
+    {
+      "stage": 256,
+      "attempt": 8,
+      "par": 3,
+      "hash": 1999644157
+    },
+    {
+      "stage": 257,
+      "attempt": 11,
+      "par": 3,
+      "hash": 116403354
+    },
+    {
+      "stage": 258,
+      "attempt": 3,
+      "par": 3,
+      "hash": 736907
+    },
+    {
+      "stage": 259,
+      "attempt": 8,
+      "par": 3,
+      "hash": 1369290328
+    },
+    {
+      "stage": 260,
+      "attempt": 7,
+      "par": 1,
+      "hash": 2858108880
+    },
+    {
+      "stage": 261,
+      "attempt": 1,
+      "par": 2,
+      "hash": 355013538
+    },
+    {
+      "stage": 262,
+      "attempt": 10,
+      "par": 2,
+      "hash": 1076384392
+    },
+    {
+      "stage": 263,
+      "attempt": 7,
+      "par": 3,
+      "hash": 3583317378
+    },
+    {
+      "stage": 264,
+      "attempt": 5,
+      "par": 3,
+      "hash": 1478811093
+    },
+    {
+      "stage": 265,
+      "attempt": 5,
+      "par": 3,
+      "hash": 1460363490
+    },
+    {
+      "stage": 266,
+      "attempt": 7,
+      "par": 3,
+      "hash": 1025982885
+    },
+    {
+      "stage": 267,
+      "attempt": 0,
+      "par": 3,
+      "hash": 450058322
+    },
+    {
+      "stage": 268,
+      "attempt": 6,
+      "par": 3,
+      "hash": 699086450
+    },
+    {
+      "stage": 269,
+      "attempt": 8,
+      "par": 3,
+      "hash": 4045399315
+    },
+    {
+      "stage": 270,
+      "attempt": 5,
+      "par": 1,
+      "hash": 3813475976
+    },
+    {
+      "stage": 271,
+      "attempt": 9,
+      "par": 2,
+      "hash": 160121022
+    },
+    {
+      "stage": 272,
+      "attempt": 4,
+      "par": 2,
+      "hash": 3537635081
+    },
+    {
+      "stage": 273,
+      "attempt": 7,
+      "par": 3,
+      "hash": 1173371195
+    },
+    {
+      "stage": 274,
+      "attempt": 7,
+      "par": 3,
+      "hash": 3075076949
+    },
+    {
+      "stage": 275,
+      "attempt": 8,
+      "par": 3,
+      "hash": 468060408
+    },
+    {
+      "stage": 276,
+      "attempt": 4,
+      "par": 3,
+      "hash": 3259654053
+    },
+    {
+      "stage": 277,
+      "attempt": 4,
+      "par": 3,
+      "hash": 198481894
+    },
+    {
+      "stage": 278,
+      "attempt": 5,
+      "par": 3,
+      "hash": 2175644724
+    },
+    {
+      "stage": 279,
+      "attempt": 11,
+      "par": 3,
+      "hash": 2944020168
+    },
+    {
+      "stage": 280,
+      "attempt": 0,
+      "par": 1,
+      "hash": 1378640279
+    },
+    {
+      "stage": 281,
+      "attempt": 1,
+      "par": 2,
+      "hash": 3256728669
+    },
+    {
+      "stage": 282,
+      "attempt": 7,
+      "par": 2,
+      "hash": 620100724
+    },
+    {
+      "stage": 283,
+      "attempt": 6,
+      "par": 3,
+      "hash": 3574462587
+    },
+    {
+      "stage": 284,
+      "attempt": 4,
+      "par": 3,
+      "hash": 896471099
+    },
+    {
+      "stage": 285,
+      "attempt": 5,
+      "par": 3,
+      "hash": 607608655
+    },
+    {
+      "stage": 286,
+      "attempt": 1,
+      "par": 3,
+      "hash": 881479819
+    },
+    {
+      "stage": 287,
+      "attempt": 2,
+      "par": 3,
+      "hash": 2622293029
+    },
+    {
+      "stage": 288,
+      "attempt": 8,
+      "par": 3,
+      "hash": 1967828483
+    },
+    {
+      "stage": 289,
+      "attempt": 3,
+      "par": 3,
+      "hash": 1616276813
+    },
+    {
+      "stage": 290,
+      "attempt": 3,
+      "par": 1,
+      "hash": 2980959727
+    },
+    {
+      "stage": 291,
+      "attempt": 11,
+      "par": 2,
+      "hash": 67119788
+    },
+    {
+      "stage": 292,
+      "attempt": 0,
+      "par": 2,
+      "hash": 3225148415
+    },
+    {
+      "stage": 293,
+      "attempt": 4,
+      "par": 3,
+      "hash": 238396756
+    },
+    {
+      "stage": 294,
+      "attempt": 4,
+      "par": 3,
+      "hash": 1484212167
+    },
+    {
+      "stage": 295,
+      "attempt": 1,
+      "par": 3,
+      "hash": 2432195672
+    },
+    {
+      "stage": 296,
+      "attempt": 2,
+      "par": 3,
+      "hash": 2111382969
+    },
+    {
+      "stage": 297,
+      "attempt": 3,
+      "par": 3,
+      "hash": 354673954
+    },
+    {
+      "stage": 298,
+      "attempt": 0,
+      "par": 3,
+      "hash": 3680627788
+    },
+    {
+      "stage": 299,
+      "attempt": 2,
+      "par": 3,
+      "hash": 2871390836
+    },
+    {
+      "stage": 300,
+      "attempt": 0,
+      "par": 1,
+      "hash": 2113752184
+    }
+  ]
+}

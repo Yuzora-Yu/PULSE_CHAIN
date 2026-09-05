@@ -1,0 +1,36 @@
+{
+  "testedAt": "2026-09-05T00:12:50.715Z",
+  "rows": [
+    {
+      "code": "PC1-C-H-91",
+      "status": 200,
+      "taps": 1,
+      "totalMs": 2992
+    },
+    {
+      "code": "PC1-C-H-141",
+      "status": 200,
+      "taps": 1,
+      "totalMs": 1082
+    },
+    {
+      "code": "PC1-C-X-451",
+      "status": 200,
+      "taps": 2,
+      "totalMs": 1216
+    },
+    {
+      "code": "PC1-C-Z-901",
+      "status": 200,
+      "taps": 1,
+      "totalMs": 1030
+    },
+    {
+      "code": "PC1-I-Z-RELEASE",
+      "status": 200,
+      "taps": 5,
+      "totalMs": 9999
+    }
+  ],
+  "errors": []
+}

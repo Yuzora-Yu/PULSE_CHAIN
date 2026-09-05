@@ -1,0 +1,50 @@
+name: Verify PULSE CHAIN
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run regression
+      - run: npm run build
+      - run: npm run qa -- 1000
+      - uses: actions/upload-artifact@v4
+        with:
+          name: static-site-and-qa
+          path: |
+            site/
+            reports/qa-summary.json
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run build
+      - run: |
+          npm run preview -- --port 4173 > /tmp/pulse-preview.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173/games/PULSE_CHAIN/ > /dev/null; then break; fi
+            sleep 1
+          done
+          TEST_URL=http://127.0.0.1:4173/games/PULSE_CHAIN/ STRICT_BROWSERS=1 npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-results
+          path: docs/browser-results.json

@@ -1,0 +1,14 @@
+node_modules/
+dist/
+site/
+test-results/
+playwright-report/
+.wrangler/
+.env*
+!.env.example
+reports/*.csv
+docs/*-desktop.png
+docs/*-mobile.png
+docs/game-desktop.png
+docs/home-desktop.png
+docs/*-debug.png

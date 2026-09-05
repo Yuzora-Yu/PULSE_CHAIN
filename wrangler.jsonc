@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "pulse-chain",
+  "compatibility_date": "2026-09-05",
+  "assets": { "directory": "./site", "html_handling": "auto-trailing-slash", "not_found_handling": "none" },
+  "env": {
+    "production": {
+      "name": "pulse-chain",
+      "routes": [
+        { "pattern": "yu-zora.com/games/PULSE_CHAIN/*", "zone_name": "yu-zora.com" },
+        { "pattern": "yu-zora.com/games/PULSE_CHAIN", "zone_name": "yu-zora.com" }
+      ]
+    }
+  }
+}

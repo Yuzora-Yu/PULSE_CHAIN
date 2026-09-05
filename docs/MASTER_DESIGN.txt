@@ -1,0 +1,3091 @@
+# PULSE CHAIN
+## 永久生成型グローバル・パズルゲーム 総合企画・詳細設計書
+
+
+**Master Design Document / v1.0**  
+作成日: 2026-09-04  
+想定配信: GitHub + Cloudflare Pages等の静的ホスティング  
+本番AI/API: 不使用  
+想定開発支援: GPT-6級の高性能コーディングモデルを開発者として使用
+
+
+---
+
+
+# 0. エグゼクティブサマリー
+
+
+PULSE CHAINは、盤面上のCOREを1つタップすると発光するPULSE弾が複数方向へ走り、別のCOREへ命中するとそのCOREも起爆し、反射・分裂・耐久・障害物などを介して連鎖が広がっていく、1タップ中心の連鎖型ロジックパズルである。
+
+
+プレイヤーの目的は、できるだけ少ないTAPで盤面上のCOREをすべて消去すること。
+
+
+本企画の特徴は、単に無限に問題を生成することではない。SolverとQuality Gateを使い、**人間が遊んで「もう1問」と感じる良問を、AIなしで永久に生成する機械そのものを作る**ことを目標とする。
+
+
+本番環境ではOpenAI API、LLM API、ユーザーDB、ログイン、常時稼働サーバーを使用しない。ゲーム、Solver、Generatorはユーザーのブラウザ内で動作し、GitHubでコード管理し、Cloudflare Pages等で静的配信する。
+
+
+ゲームモードは以下を中核とする。
+
+
+- 世界中のプレイヤーが同じ番号の問題を遊ぶCAMPAIGN
+- 難易度指定で事実上無限に遊べるINFINITE MODE
+- 日付seedから世界共通問題を生成するDAILY PUZZLE
+- seed / Puzzle Codeによる完全再現・共有
+
+
+本番稼働後の理想は、開発者が長期間新ステージを手作業で追加しなくても、Stage 10,000、Stage 100,000、Daily、Infiniteが継続して成立する状態である。
+
+
+---
+
+
+# 1. プロジェクトの目的
+
+
+## 1.1 目指すゲーム
+
+
+世界中の誰でも、
+
+
+- 数秒でルールを理解できる
+- 文字を読まなくても基本操作が分かる
+- スマホでもPCでも遊べる
+- 1問が短く、隙間時間でも遊べる
+- 難問ではしっかり考えられる
+- 1タップの結果を見るだけでも気持ちいい
+- 「次の問題も見たい」が生まれる
+- Campaignを長期的に進められる
+- Campaign以外にも永久に新問題を遊べる
+
+
+というパズルゲームを作る。
+
+
+## 1.2 一文コンセプト
+
+
+> **ひとつ押す。全部つながる。**
+
+
+英語:
+
+
+> **Tap one. Trigger them all.**
+
+
+## 1.3 ジャンル
+
+
+ミニマル・連鎖型ロジックパズル。
+
+
+主な要素:
+
+
+- 1タップ
+- 連鎖
+- 予測
+- 反射
+- 分岐
+- 最小手数
+- 幾何学的盤面
+- 爽快なカスケード演出
+- 世界共通Stage
+- 手続き型生成
+
+
+---
+
+
+# 2. 企画原則
+
+
+## 2.1 本番でAIを使わない
+
+
+GPT-6級モデルはゲーム内AIとして使わない。
+
+
+使用目的は開発時の以下に限定する。
+
+
+- ゲームデザイン
+- Pure Logic設計
+- Solver実装
+- Generator実装
+- Quality Model改善
+- 自動テスト
+- 大量seed分析
+- UI/UX改善
+- パフォーマンス改善
+
+
+完成後のユーザー操作からLLM APIを呼び出さない。
+
+
+## 2.2 運用コストをほぼゼロにする
+
+
+基本構成:
+
+
+```text
+GitHub
+  ↓
+Cloudflare Pages等
+  ↓
+Static Web App
+  ↓
+ブラウザ内でGame / Solver / Generator実行
+```
+
+
+使用:
+
+
+- HTML
+- CSS
+- TypeScript / JavaScript
+- Canvas 2D
+- Web Worker
+- IndexedDB / LocalStorage
+- Service Worker
+- Web Audio API
+
+
+原則不使用:
+
+
+- 独自バックエンド
+- 常時稼働サーバー
+- ユーザーDB
+- 強制ログイン
+- 課金API
+- 広告視聴必須
+- ガチャ
+- ライフ / スタミナ
+
+
+## 2.3 世界共通性
+
+
+ゲームルールは言語・文化・地域に依存させない。
+
+
+色だけで意味を伝えない。
+
+
+アイコン、形状、数字、動きで理解できる設計とする。
+
+
+---
+
+
+# 3. ゲームのコアルール
+
+
+## 3.1 基本操作
+
+
+プレイヤーが行う基本操作は1つ。
+
+
+**盤面上のCOREをタップする。**
+
+
+原則使わない操作:
+
+
+- ドラッグ必須
+- 長押し必須
+- 精密スワイプ
+- 2本指ジェスチャー
+
+
+## 3.2 勝利条件
+
+
+盤面上の破壊対象COREをすべて消去すればCLEAR。
+
+
+## 3.3 TAP
+
+
+プレイヤーがCOREを直接起爆する操作をTAPと呼ぶ。
+
+
+各ステージにはSolverによる最小TAP数 `par` を持つ。
+
+
+## 3.4 クリア評価
+
+
+- PERFECT CASCADE: 最小TAPでCLEAR
+- GREAT: 最小TAP + 1
+- CLEAR: それ以上
+
+
+Stage進行はCLEARだけで可能。Perfect強制はしない。
+
+
+## 3.5 ONE TAP CASCADE
+
+
+1 TAPで盤面全体を消した場合は特別扱いする。
+
+
+旧PUSH/PULL案では「一手で終わる」は退屈だったが、CHAIN版では「一手で巨大な結果を設計できた」こと自体を報酬にする。
+
+
+---
+
+
+# 4. CORE
+
+
+## 4.1 NORMAL CORE
+
+
+HP = 1。
+
+
+- 直接タップすると即起爆
+- PULSEが1回命中すると起爆
+- 起爆時に標準方向へPULSEを発射
+
+
+標準方向:
+
+
+```text
+↖ ↑ ↗
+← ● →
+↙ ↓ ↘
+```
+
+
+8方向。
+
+
+## 4.2 ARMOR CORE
+
+
+HP = 2 または3。
+
+
+中央に数字を表示する。
+
+
+役割:
+
+
+- 複数方向からPULSEを集める
+- 連鎖の一時停止点になる
+- 起爆タイミングを遅らせる
+- 複数ルートを合流させる
+
+
+ARMORは単なる耐久オブジェクトではなく、**連鎖タイミングを制御する蓄積装置**と考える。
+
+
+---
+
+
+# 5. PULSE
+
+
+## 5.1 定義
+
+
+PULSEはCORE起爆時に発生するエネルギー弾。
+
+
+ロジック上はGridイベントだが、画面では**小さな発光球が実際に移動する**。
+
+
+以前の試作で、単なる線エフェクトでは操作感・爽快感を評価できず、実際に発光球が盤面を走る版で明確に体験が改善したため、この仕様は必須とする。
+
+
+## 5.2 移動
+
+
+整数Gridを1セルずつ進む。
+
+
+演出上の初期目安:
+
+
+- 60〜100ms / cell
+- 初期値 85ms / cell
+
+
+Logicは速度に依存しない。
+
+
+## 5.3 方向
+
+
+標準COREは8方向。
+
+
+- N
+- NE
+- E
+- SE
+- S
+- SW
+- W
+- NW
+
+
+将来特殊COREとして4方向、斜めのみ等を導入する場合も、初期ギミック群とは分離して検討する。
+
+
+## 5.4 停止・変化条件
+
+
+PULSEは以下で停止または挙動変更する。
+
+
+- 盤面外
+- VOID
+- BLOCK
+- CORE
+- MIRROR
+- SPLITTER
+- GATE
+- PORTAL
+- その他状態ギミック
+
+
+## 5.5 CORE命中
+
+
+```text
+HP -= 1
+```
+
+
+HP > 0:
+
+
+- COREが膨張
+- Flash
+- 数字更新
+- PULSE消滅
+
+
+HP <= 0:
+
+
+- 起爆予約
+- 短いdelay
+- 起爆
+- 新しいPULSE群発生
+
+
+---
+
+
+# 6. 連鎖シミュレーション
+
+
+## 6.1 Wave-based Simulation
+
+
+複数のPULSEが同時に存在するため、処理順による結果差を防ぐ。
+
+
+推奨:
+
+
+```text
+Wave 0
+Player taps A
+
+
+Wave 1
+Aの全PULSEを評価
+B / CへHit
+
+
+Wave 2
+Wave 1で起爆条件を満たしたCOREを起爆
+D / E / FへHit
+
+
+Wave 3
+次の起爆群
+```
+
+
+同じState + 同じTapで必ず同じNext Stateになること。
+
+
+## 6.2 Event Timeline
+
+
+Transition Engineは結果だけでなく演出イベント列も返す。
+
+
+例:
+
+
+```json
+{
+  "events": [
+    {"type":"core_charge","coreId":3},
+    {"type":"core_explode","coreId":3},
+    {"type":"pulse_spawn","pulseId":17},
+    {"type":"pulse_move","pulseId":17,"from":[4,4],"to":[4,5]},
+    {"type":"pulse_reflect","pulseId":17,"cell":[4,7]},
+    {"type":"pulse_hit","pulseId":17,"coreId":8},
+    {"type":"core_hp","coreId":8,"from":2,"to":1}
+  ]
+}
+```
+
+
+RendererはこのTimelineを再生するだけにする。
+
+
+---
+
+
+# 7. 基本ギミック
+
+
+ギミックを無限に増やさない。
+
+
+最終的な主要ギミックは8〜10種類程度に制限する。
+
+
+## 7.1 BLOCK
+
+
+PULSEを停止する。
+
+
+反射しない。
+
+
+見た目は重く、不透明で明確にする。
+
+
+## 7.2 MIRROR
+
+
+2種類。
+
+
+```text
+/
+\
+```
+
+
+PULSEを90度反射する。
+
+
+視覚と挙動を完全一致させる。
+
+
+## 7.3 SPLITTER
+
+
+PULSEを複数方向へ分裂させる。
+
+
+分裂方向は形状で明示する。
+
+
+SPLITTERによりPULSE数が指数増加し得るため、安全上限を設ける。
+
+
+## 7.4 VOID
+
+
+内部Grid上では位置があるが、盤面には存在しないセル。
+
+
+PULSEはVOIDへ入ると消える。
+
+
+用途:
+
+
+- 非正方形盤面
+- 射線制御
+- ステージシルエット形成
+
+
+## 7.5 GATE
+
+
+特定方向からのみPULSEを通す。
+
+
+後半用。
+
+
+## 7.6 CHARGE
+
+
+一定回数PULSEを受けると起動する中継装置。
+
+
+破壊対象ではない。
+
+
+## 7.7 ROTATOR
+
+
+PULSE命中時に向きが変わる。
+
+
+盤面に状態・記憶を持たせる高難度ギミック。
+
+
+## 7.8 PORTAL
+
+
+PULSEを別地点へ転送。
+
+
+後半限定。
+
+
+原則1ステージ1〜2pairまで。
+
+
+---
+
+
+# 8. ギミック解放計画
+
+
+- Stage 1〜20: NORMAL
+- 21〜50: ARMOR 2
+- 51〜90: BLOCK
+- 91〜140: MIRROR
+- 141〜210: SPLITTER
+- 211〜300: ARMOR 3
+- 301〜450: GATE
+- 451〜650: CHARGE
+- 651〜900: ROTATOR
+- 901〜: PORTAL
+
+
+新ギミック導入直後は難易度を一時的に下げる。
+
+
+1ステージで使用する特殊ギミックは原則最大3種類。
+
+
+---
+
+
+# 9. 盤面
+
+
+## 9.1 内部表現
+
+
+整数Grid。
+
+
+## 9.2 表示形状
+
+
+正方形固定にしない。
+
+
+候補:
+
+
+- Square
+- Rectangle
+- Wide
+- Tall
+- Diamond
+- Cross
+- Ring
+- L
+- T
+- H
+- U
+- Spiral
+- Snake
+- Islands
+- Donut
+- Notched
+- Asymmetric
+- Hollow
+- Twin Island
+
+
+## 9.3 サイズ
+
+
+序盤:
+
+
+- 5×5〜7×7相当
+
+
+中盤:
+
+
+- 8×6〜10×8
+
+
+後半:
+
+
+- 最大15×11程度
+
+
+大きさそのものを難易度としない。
+
+
+## 9.4 視認性
+
+
+スマホ画面で以下が判別可能であること。
+
+
+- CORE HP
+- MIRROR方向
+- SPLITTER出力
+- VOID
+- BLOCK
+- PULSE経路
+
+
+Zoomを前提にしない。
+
+
+---
+
+
+# 10. ゲームモード
+
+
+## 10.1 CAMPAIGN
+
+
+Candy Crush / Toon Blast型の世界共通進行。
+
+
+```text
+STAGE 1
+STAGE 2
+...
+STAGE 10000
+```
+
+
+同じStage番号は全ユーザーで同じ問題。
+
+
+### 初期Stage
+
+
+Stage 1〜200または300程度は、人間 + GPT-6による強いレビュー・調整を推奨。
+
+
+序盤体験をGeneratorへ丸投げしない。
+
+
+### 自動Campaign
+
+
+以降はStage番号から決定論的生成。
+
+
+```text
+Stage Number
+ ↓
+Generator Version
+ ↓
+Seed
+ ↓
+Candidate
+ ↓
+Solver
+ ↓
+Difficulty Gate
+ ↓
+Quality Gate
+ ↓
+採用
+```
+
+
+## 10.2 INFINITE MODE
+
+
+難易度指定で永久生成。
+
+
+- EASY
+- NORMAL
+- HARD
+- EXPERT
+- EXTREME
+
+
+## 10.3 DAILY PUZZLE
+
+
+日付seed。
+
+
+例:
+
+
+```text
+PULSECHAIN|DAILY|2034-05-21
+```
+
+
+世界共通。
+
+
+基本はUTC切替。
+
+
+## 10.4 CHALLENGE MODE
+
+
+将来候補。
+
+
+- ONE TAP
+- HUGE CHAIN
+- MIRROR MASTER
+- SPLIT MADNESS
+- NO MISTAKE
+
+
+---
+
+
+# 11. Seedと再現性
+
+
+## 11.1 Campaign Seed
+
+
+例:
+
+
+```text
+PULSECHAIN|CAMPAIGN|RULE-V1|GEN-V3|12582|ATTEMPT-4
+```
+
+
+文字列をHashし、seeded PRNGへ渡す。
+
+
+## 11.2 Puzzle Code
+
+
+例:
+
+
+```text
+PC-8KM4-Q7RX
+```
+
+
+同じPuzzle Codeは永久に同じ問題を再現。
+
+
+共有URL例:
+
+
+```text
+?p=8KM4Q7RX
+```
+
+
+## 11.3 PRNG
+
+
+Math.random依存は禁止。
+
+
+候補:
+
+
+- xoshiro
+- splitmix
+- mulberry系
+
+
+仕様として固定する。
+
+
+---
+
+
+# 12. Generator VersionとCampaign互換
+
+
+Generator改善で既存Stageが変化してはいけない。
+
+
+```text
+GEN-V1
+GEN-V2
+GEN-V3
+```
+
+
+旧Stageは旧Generatorで再生成する。
+
+
+軽量Manifestを持ってもよい。
+
+
+Manifest項目:
+
+
+```text
+stage
+generatorVersion
+attempt
+par
+difficulty
+qualityScore
+```
+
+
+盤面そのものを保存する必要はない。
+
+
+---
+
+
+# 13. Solver
+
+
+SolverはPULSE CHAINの心臓部。
+
+
+UIより先に完成させる。
+
+
+## 13.1 最大原則
+
+
+**GameとSolverは同じTransition Engineを使う。**
+
+
+Solver側に別ルールを再実装しない。
+
+
+## 13.2 State Model
+
+
+最低限:
+
+
+- 各COREのHP / alive
+- ROTATOR向き
+- CHARGE値
+- GATE状態
+- TAP数
+
+
+アニメーション位置はStateに含めない。
+
+
+## 13.3 Pure Transition Engine
+
+
+入力:
+
+
+```text
+State + Tapped Core ID
+```
+
+
+出力:
+
+
+```text
+Next State + Event Timeline + Action Metadata
+```
+
+
+## 13.4 Determinism
+
+
+同一State + 同一Tap = 同一結果。
+
+
+Logicで浮動小数点物理を使わない。
+
+
+## 13.5 Solver Algorithm
+
+
+MVPはBFS。
+
+
+必要に応じて:
+
+
+- A*
+- IDA*
+- Bidirectional Search
+- Transposition Table
+- Zobrist Hash
+- Symmetry Reduction
+
+
+## 13.6 Solver用途
+
+
+- 解答存在確認
+- 最短TAP
+- Hint
+- Winning First Moves
+- Solution Count推定
+- Generator検証
+- Difficulty
+- Quality分析
+- Regression Test
+
+
+---
+
+
+# 14. Puzzle Generator
+
+
+## 14.1 最大原則
+
+
+単純ランダム配置を主方式にしない。
+
+
+本命は、
+
+
+**Solution-first / Chain Graph Generation**
+
+
+である。
+
+
+## 14.2 Chain Graph
+
+
+盤面を作る前に、気持ちいい連鎖構造を作る。
+
+
+例:
+
+
+```text
+A
+├── B
+│   └── D
+└── C
+    └── E
+
+
+D + E
+   ↓
+ARMOR F
+   ↓
+MIRROR
+   ↓
+G
+   ↓
+SPLITTER
+├── H
+└── I
+```
+
+
+## 14.3 Reverse Construction
+
+
+CLEARから逆算する方式も検討。
+
+
+```text
+CLEAR
+ ↑
+Final Core
+ ↑
+Trigger Pair
+ ↑
+Previous Core
+```
+
+
+## 14.4 Generator Pipeline
+
+
+```text
+Seed
+ ↓
+Difficulty Profile
+ ↓
+Board Shape
+ ↓
+Chain Graph
+ ↓
+Graph Embedding
+ ↓
+Gimmick Placement
+ ↓
+Solver
+ ↓
+Difficulty Evaluation
+ ↓
+Quality Evaluation
+ ↓
+Mutation
+ ↓
+Final Candidate
+```
+
+
+## 14.5 Mutation
+
+
+成立したCandidateを改善する。
+
+
+例:
+
+
+- CORE位置変更
+- ARMOR値変更
+- MIRROR移動
+- VOID追加
+- BLOCK追加
+- SPLITTER方向変更
+
+
+変更後は必ずSolver再検証。
+
+
+## 14.6 Candidate Pool
+
+
+Infiniteで1 Candidateを即採用しない。
+
+
+難易度に応じて10〜50 Candidate程度を生成し、Quality上位を採用する。
+
+
+---
+
+
+# 15. Difficulty Model
+
+
+最小TAPだけで難易度を決めない。
+
+
+## 15.1 Features
+
+
+- Optimal Tap Count
+- Winning First Move Ratio
+- Solver Explored States
+- Branching Factor
+- Solution Count
+- Trap Move Count
+- Core Count
+- Armor Count
+- Mirror Count
+- Splitter Count
+- Required Bounce Count
+- Required Split Count
+- Chain Depth
+- Visual Density
+- State-changing Gimmick Count
+
+
+## 15.2 Winning First Move Ratio
+
+
+特に重要。
+
+
+12 CORE中10個の初手から解ける問題は簡単。
+
+
+12 CORE中1個しか正しい流れへ入れない問題は難しい。
+
+
+## 15.3 Difficulty Profiles
+
+
+### EASY
+
+
+- Core 4〜8
+- Optimal 1〜2
+- 特殊0〜1
+- Winning First Moves多め
+
+
+### NORMAL
+
+
+- Core 7〜12
+- Optimal 2〜3
+- 特殊1〜2
+
+
+### HARD
+
+
+- Core 10〜18
+- Optimal 3〜4
+- 正解初手少なめ
+
+
+### EXPERT
+
+
+- Core 12〜22
+- Optimal 3〜5
+- 誤誘導あり
+
+
+### EXTREME
+
+
+- Core 15〜28
+- Optimal 4〜6
+- 状態変化ギミックあり
+
+
+---
+
+
+# 16. Quality Model
+
+
+DifficultyとQualityを分離する。
+
+
+難しいから良問とは限らない。
+
+
+## 16.1 Quality Features
+
+
+- Chain Satisfaction
+- Elegance
+- Surprise
+- Interaction Density
+- Visual Clarity
+- Dead Object Ratio
+- Gimmick Necessity
+- Trap Quality
+- Max Chain
+- Average Chain
+- Ending Satisfaction
+- Diversity
+
+
+## 16.2 Chain Satisfaction
+
+
+目安:
+
+
+- 1〜2: 低
+- 3〜5: 普通
+- 6〜9: 良
+- 10〜15: 高
+- 16+: 非常に高
+
+
+## 16.3 Dead Object Ratio
+
+
+最適解に関与しないCOREやギミックが多い問題は低評価。
+
+
+## 16.4 Gimmick Necessity
+
+
+MIRRORが配置されているのに解答で使わない場合は低評価。
+
+
+SPLITTERを使わなくても同等解がある場合も要評価。
+
+
+## 16.5 Surprise
+
+
+良いSurpriseは、
+
+
+**予想外だが、結果を見れば理解できる。**
+
+
+ランダムで意味不明な挙動は評価しない。
+
+
+## 16.6 Trap Quality
+
+
+良い失敗:
+
+
+```text
+あと1個残った
+```
+
+
+悪い失敗:
+
+
+```text
+なぜ詰んだのか理解できない
+```
+
+
+## 16.7 排除対象
+
+
+- 小連鎖のみ
+- 特殊ギミックが飾り
+- 起点が自明すぎる
+- COREが独立
+- ARMORが無意味
+- 同型配置の連続
+- 視認性が悪い
+- 総当たり以外に考え方がない
+- 高難度なのに演出報酬が弱い
+
+
+---
+
+
+# 17. Diversity Gate
+
+
+永久生成では「似た問題だらけ」を避ける必要がある。
+
+
+## 17.1 Board Fingerprint
+
+
+盤面形状、CORE分布、ギミック配置をsignature化。
+
+
+## 17.2 Solution Signature
+
+
+最適解のChain Graph自体をsignature化。
+
+
+CORE位置が少し違うだけで同じ思考手順なら近似重複扱い候補。
+
+
+## 17.3 Campaign Diversity
+
+
+直近Stage群と似すぎたCandidateはRejectする。
+
+
+---
+
+
+# 18. Campaign Difficulty Curve
+
+
+単純右肩上がりにしない。
+
+
+例:
+
+
+```text
+EASY
+EASY
+NORMAL
+NORMAL
+HARD
+EASY
+NORMAL
+HARD
+HARD
+VERY HARD
+```
+
+
+難問後にはRest Stageを入れる。
+
+
+Rest Stage例:
+
+
+```text
+1 TAP
+CHAIN 18
+```
+
+
+考える疲労を、見る爽快感でリセットする。
+
+
+---
+
+
+# 19. Milestone設計
+
+
+例:
+
+
+- Stage 10: 小さな演出
+- 50: 大型盤面
+- 100: 新形状
+- 500: 特殊Challenge
+- 1000: 記念Stage
+
+
+数字が大きいだけの報酬ではなく、ゲーム内体験の変化を入れる。
+
+
+---
+
+
+# 20. Tutorial設計
+
+
+文字説明を極小化する。
+
+
+## Stage 1
+
+
+1つのCOREを強調。
+
+
+タップすると3〜4連鎖。
+
+
+CLEAR。
+
+
+## Stage 2
+
+
+複数CORE。
+
+
+## Stage 3
+
+
+複数の初手候補。
+
+
+## ARMOR初登場
+
+
+命中時に数字が `2 → 1` へ変わる。
+
+
+文章で説明しない。
+
+
+## MIRROR初登場
+
+
+PULSEがMIRRORへ近づく。
+
+
+一瞬だけ演出を強調。
+
+
+曲がる。
+
+
+COREへHit。
+
+
+これで理解させる。
+
+
+---
+
+
+# 21. UX / 演出
+
+
+本ゲームでは、**解く快感と見る快感を同等に重視する。**
+
+
+## 21.1 タップ
+
+
+1. CORE収縮
+2. 中央発光
+3. ring wave
+4. 起爆
+5. PULSE発射
+6. 軽い低音
+
+
+## 21.2 PULSE
+
+
+線ではなく実際に移動する発光球。
+
+
+- Glow
+- Trail
+- 加速感
+- MIRRORで曲がる
+- SPLITTERで実際に複数球へ分裂
+
+
+## 21.3 CORE Hit
+
+
+- 1.15〜1.25倍へ膨張
+- Flash
+- Ripple
+- Hit音
+
+
+## 21.4 CORE Explode
+
+
+- Scale up
+- Fade
+- Particle
+- 次PULSE spawn
+
+
+## 21.5 CHAIN表示
+
+
+```text
+CHAIN ×3
+CHAIN ×5
+CHAIN ×8
+CHAIN ×12
+```
+
+
+## 21.6 CHAIN演出段階
+
+
+- 1〜3: 通常
+- 4〜6: 表示強化
+- 7〜10: 軽いscreen shake
+- 11〜15: particle増加
+- 16+: 背景flash
+
+
+## 21.7 最後のCORE
+
+
+100〜200ms程度だけ強調。
+
+
+長いslow motionは禁止。
+
+
+---
+
+
+# 22. Audio / Haptics
+
+
+Web Audio API推奨。
+
+
+Chainが増えるごとにPitchを少し上げる。
+
+
+上限を設け、不快な高音化を避ける。
+
+
+設定:
+
+
+- Sound ON/OFF
+- Volume
+- Reduced Sound
+- Haptics ON/OFF
+
+
+対応端末では大Chainで短い振動を検討。
+
+
+---
+
+
+# 23. Visual Style
+
+
+方向性:
+
+
+**Digital Toy + Neon Geometry**
+
+
+Keywords:
+
+
+- luminous
+- tactile
+- geometric
+- elastic
+- clean
+- premium
+- satisfying
+- playful
+- minimal
+
+
+避ける:
+
+
+- 知育教材っぽさ
+- 数学問題集っぽさ
+- 安価な広告ゲーム感
+- 過剰なSF HUD
+- 文字だらけ
+
+
+キャラクターやストーリーは必須にしない。
+
+
+ゲームの視覚言語自体をブランドにする。
+
+
+---
+
+
+# 24. UI
+
+
+## HOME
+
+
+大:
+
+
+```text
+CONTINUE
+STAGE xxx
+```
+
+
+```text
+INFINITE
+```
+
+
+小:
+
+
+- DAILY
+- SETTINGS
+- HOW TO PLAY
+
+
+## Game HUD
+
+
+上:
+
+
+```text
+STAGE 384
+TAPS 1 / 3
+```
+
+
+中央:
+
+
+Board
+
+
+下:
+
+
+```text
+UNDO
+RESET
+HINT
+```
+
+
+余計なメニューを増やさない。
+
+
+---
+
+
+# 25. Core Loop
+
+
+```text
+盤面を見る
+↓
+連鎖を予測
+↓
+COREを選ぶ
+↓
+タップ
+↓
+PULSE連鎖を見る
+↓
+結果を理解
+↓
+改善またはCLEAR
+↓
+NEXT
+```
+
+
+中毒性はガチャやデイリー報酬ではなく、
+
+
+**理解 → 予測 → 実行 → 爽快**
+
+
+という短いループから作る。
+
+
+---
+
+
+# 26. Meta Loop
+
+
+```text
+Campaign進行
+↓
+新ギミック
+↓
+新盤面形状
+↓
+難問
+↓
+爽快Rest Stage
+↓
+さらに進行
+```
+
+
+---
+
+
+# 27. 1問の長さ
+
+
+目安:
+
+
+- EASY: 10〜40秒
+- NORMAL: 30〜90秒
+- HARD: 1〜5分
+- EXTREME: 数分以上
+
+
+基本的に時間制限なし。
+
+
+---
+
+
+# 28. Hint / 手詰まり
+
+
+Solverを利用する。
+
+
+Hint Level 1:
+
+
+正解候補COREを柔らかく発光。
+
+
+Level 2:
+
+
+具体COREを強調。
+
+
+手詰まり状態をSolverが検出した場合、
+
+
+`NO SOLUTION FROM HERE`
+
+
+相当の情報を出してもよい。
+
+
+失敗を罰しない。
+
+
+---
+
+
+# 29. Save
+
+
+基本はIndexedDB。
+
+
+必要に応じLocalStorage併用。
+
+
+保存:
+
+
+- Current Campaign Stage
+- Cleared Stage
+- Perfect
+- Daily history
+- Settings
+- Generator Version
+- Puzzle Cache
+
+
+将来Export Saveを実装。
+
+
+アカウント不要。
+
+
+---
+
+
+# 30. PWA / Offline
+
+
+必須。
+
+
+- Installable
+- Service Worker
+- Asset Cache
+- Offline Play
+
+
+一度読み込めば、Campaign cache、Infinite、Daily計算、設定をネットなしでも使用可能にする。
+
+
+---
+
+
+# 31. 技術構成
+
+
+推奨:
+
+
+- TypeScript
+- HTML
+- CSS
+- Canvas 2D
+- DOM
+- Web Worker
+- IndexedDB
+- Service Worker
+- Web Audio API
+
+
+大型Frameworkは必須ではない。
+
+
+長期保守、依存削減、静的配信を優先。
+
+
+---
+
+
+# 32. Renderer構成
+
+
+推奨: DOM + Canvas Hybrid。
+
+
+DOM:
+
+
+- CORE
+- BLOCK
+- MIRROR
+- SPLITTER等
+
+
+Canvas:
+
+
+- PULSE
+- trail
+- particles
+- flash
+
+
+RendererはEvent Timelineのみを見る。
+
+
+FPSが落ちてもLogic結果は変化しない。
+
+
+---
+
+
+# 33. Web Worker
+
+
+Solver / GeneratorはWorkerで実行。
+
+
+UI threadを止めない。
+
+
+Stage Nをプレイ中にN+1〜N+3をprefetchする。
+
+
+---
+
+
+# 34. Generator Performance
+
+
+目標:
+
+
+- NORMAL Candidate: 数十ms
+- HARD Candidate: 100〜300ms程度
+
+
+時間内に生成できない場合は別seedまたはprofileへfallback。
+
+
+InfiniteではCandidate Poolをbackgroundで準備する。
+
+
+---
+
+
+# 35. 安全装置
+
+
+## 35.1 Mirror Loop
+
+
+Pulseごとに `cell + direction` をvisited管理。
+
+
+同一状態へ再訪したPulseは消滅。
+
+
+## 35.2 Splitter Explosion
+
+
+1 Chainの最大Pulse数を制限。
+
+
+初期候補: 2048。
+
+
+超過するCandidateはGenerator段階で不採用。
+
+
+---
+
+
+# 36. QA
+
+
+公開前に大量seed試験を行う。
+
+
+最低:
+
+
+100,000 Candidate。
+
+
+推奨:
+
+
+1,000,000以上。
+
+
+自動確認:
+
+
+- crashなし
+- infinite loopなし
+- Solver完走
+- seed再現性
+- invalid HPなし
+- Mirror loop防止
+- Pulse overflowなし
+- renderer bounds
+- state hash一致
+
+
+---
+
+
+# 37. Regression
+
+
+固定seedセットを用意。
+
+
+目安: 10,000 seed。
+
+
+コード変更時に比較:
+
+
+- Board Hash
+- par
+- optimal solution
+- final state hash
+- max chain
+
+
+RULE変更でないのに結果が変化したらFail。
+
+
+---
+
+
+# 38. Versioning
+
+
+必ず分離する。
+
+
+```text
+RULE_VERSION
+GENERATOR_VERSION
+DIFFICULTY_VERSION
+SAVE_VERSION
+RENDERER_VERSION
+```
+
+
+旧Campaignの挙動を変更しない。
+
+
+必要ならRULE-V2として新規扱い。
+
+
+SaveはMigration functionを持つ。
+
+
+---
+
+
+# 39. Accessibility
+
+
+必須:
+
+
+- Color + Shape
+- High Contrast
+- Reduce Motion
+- Sound OFF
+- Haptics OFF
+- Keyboard
+- Large Touch Target
+- ARIA
+
+
+色だけで情報を伝えない。
+
+
+ARMORは数字。
+
+
+MIRRORは形。
+
+
+GATEは矢印。
+
+
+---
+
+
+# 40. Browser / Device
+
+
+最低:
+
+
+- Chrome
+- Edge
+- Firefox
+- Safari
+
+
+特にMobile Safariを重視。
+
+
+Portrait優先。
+
+
+Landscape対応。
+
+
+PCではMouse + Keyboard。
+
+
+---
+
+
+# 41. Privacy / Analytics
+
+
+ユーザーデータを外部送信しないことを基本とする。
+
+
+Analyticsは必須ではない。
+
+
+使う場合もprivacy-friendlyで最小限。
+
+
+Server Rankingは初期版では作らない。
+
+
+Local Record:
+
+
+- Highest Campaign
+- Perfect Count
+- Max Chain
+- Daily Streak
+
+
+---
+
+
+# 42. Share
+
+
+サーバーランキングより、Puzzleそのものの共有を重視。
+
+
+例:
+
+
+```text
+Can you clear this in 2 taps?
+PC-8KM4-Q7RX
+```
+
+
+SNSで短い連鎖動画とPuzzle Codeを共有できると強い。
+
+
+---
+
+
+# 43. 競合と差別化
+
+
+公開前にWeb / iOS / Android / Steamで再調査する。
+
+
+完全な世界初を前提にしない。
+
+
+差別化の組み合わせ:
+
+
+- 8方向PULSE
+- visible projectile
+- chain cascade
+- irregular board shapes
+- reflection
+- split
+- armor timing
+- world-common infinite campaign
+- solver-certified procedural generation
+- serverless / loginless
+
+
+---
+
+
+# 44. MVP
+
+
+最低機能:
+
+
+- Campaign 1〜100
+- NORMAL CORE
+- ARMOR
+- BLOCK
+- MIRROR
+- SPLITTER
+- VOID
+- UNDO
+- RESET
+- HINT
+- Solver
+- Generator
+- Infinite EASY / NORMAL / HARD
+- Seed Share
+- Local Save
+- Mobile
+- PWA
+
+
+---
+
+
+# 45. v1.0
+
+
+追加:
+
+
+- Campaign自動生成
+- Daily
+- Expert
+- Extreme
+- 複数盤面形状
+- Full Quality Gate
+- Save Export
+- Diversity Gate
+
+
+---
+
+
+# 46. v1.1以降候補
+
+
+- GATE
+- CHARGE
+- ROTATOR
+- PORTAL
+
+
+新ギミック追加は、既存組み合わせで深さを作れない場合のみ検討する。
+
+
+---
+
+
+# 47. 開発フェーズ
+
+
+## PHASE 0: Rule Prototype
+
+
+30〜50問を人間がプレイし、コアルールを検証。
+
+
+## PHASE 1: Pure Logic Engine
+
+
+UIなし。
+
+
+## PHASE 2: Solver
+
+
+## PHASE 3: Generator v0
+
+
+## PHASE 4: Massive QA
+
+
+100万Candidate。
+
+
+## PHASE 5: Difficulty / Quality Model
+
+
+## PHASE 6: Campaign Generator
+
+
+## PHASE 7: Visual Client
+
+
+## PHASE 8: Infinite / Daily
+
+
+## PHASE 9: PWA / Offline
+
+
+## PHASE 10: Long-term Compatibility
+
+
+---
+
+
+# 48. Prototype Gate
+
+
+30〜50問を遊び、以下を評価。
+
+
+1. 連鎖を見るだけでも気持ちいい
+2. 起点を予測するのが面白い
+3. Perfectを狙い直したい
+4. Mirrorが楽しい
+5. Splitterが楽しい
+6. 非正方形盤面が楽しい
+7. 10分以上遊びたい
+
+
+7項目中5以上YESで本制作GO。
+
+
+---
+
+
+# 49. Generator完成判定
+
+
+Random HARDを20問生成し、人間レビュー。
+
+
+目標:
+
+
+- 15問以上: 普通に遊べる
+- 10問以上: 良い
+- 3問以上: かなり良い
+
+
+これを満たせない場合、UI追加よりGenerator改善を優先する。
+
+
+---
+
+
+# 50. Human Rating
+
+
+開発中の問題評価は1〜5点。
+
+
+項目:
+
+
+- Fun
+- Clarity
+- Satisfaction
+- Difficulty
+- Novelty
+
+
+Solver特徴量との相関を分析しQuality式を改善する。
+
+
+機械学習必須ではない。
+
+
+最終的にブラウザ内で計算可能な固定式へ落とし込むことを優先。
+
+
+---
+
+
+# 51. Generator改善ループ
+
+
+```text
+100,000問生成
+↓
+統計
+↓
+低品質問題分類
+↓
+GPT-6分析
+↓
+Generator修正
+↓
+Regression
+↓
+100,000問再生成
+```
+
+
+GPT-6の最も重要な使い道の一つ。
+
+
+---
+
+
+# 52. Puzzle Metadata
+
+
+例:
+
+
+```json
+{
+  "seed": "PC-8KM4-Q7RX",
+  "shape": "diamond",
+  "coreCount": 14,
+  "armorCount": 3,
+  "mirrorCount": 2,
+  "splitterCount": 1,
+  "optimalTaps": 3,
+  "solutionCount": 2,
+  "statesExplored": 418,
+  "winningFirstMoves": 2,
+  "maxChain": 11,
+  "quality": 84,
+  "difficulty": 67
+}
+```
+
+
+---
+
+
+# 53. 開発ツール
+
+
+## Debug Mode
+
+
+表示可能項目:
+
+
+- seed
+- state hash
+- par
+- solver result
+- winning first moves
+- quality
+- difficulty
+- chain graph
+- pulse count
+
+
+## Generator Inspector
+
+
+複数Candidateを横並び比較。
+
+
+## Batch Generator
+
+
+1000 / 10000 / 100000 seed生成。
+
+
+CSV / JSON出力。
+
+
+---
+
+
+# 54. CI / GitHub
+
+
+GitHub Actions推奨。
+
+
+CI:
+
+
+- lint
+- typecheck
+- unit test
+- deterministic regression seeds
+- build
+
+
+Release Gate:
+
+
+- all tests pass
+- seed compatibility
+- mobile smoke
+- save migration
+- service worker version
+
+
+---
+
+
+# 55. Code Structure案
+
+
+```text
+src/
+  core/
+    rules.ts
+    state.ts
+    transition.ts
+    events.ts
+
+
+  solver/
+    bfs.ts
+    heuristics.ts
+
+
+  generator/
+    seed.ts
+    graph.ts
+    board.ts
+    embed.ts
+    mutate.ts
+    quality.ts
+    difficulty.ts
+    diversity.ts
+
+
+  renderer/
+    board.ts
+    pulse.ts
+    particles.ts
+    audio.ts
+
+
+  modes/
+    campaign.ts
+    infinite.ts
+    daily.ts
+
+
+  storage/
+    save.ts
+    migration.ts
+    cache.ts
+
+
+  workers/
+    generator.worker.ts
+    solver.worker.ts
+
+
+  app/
+    ui.ts
+    router.ts
+```
+
+
+---
+
+
+# 56. Puzzle Data Format案
+
+
+```json
+{
+  "ruleVersion": 1,
+  "generatorVersion": 3,
+  "seed": "PC-8KM4-Q7RX",
+  "cols": 9,
+  "rows": 9,
+  "voids": [],
+  "cores": [],
+  "blocks": [],
+  "mirrors": [],
+  "splitters": []
+}
+```
+
+
+---
+
+
+# 57. State Data Format案
+
+
+```json
+{
+  "coreHp": {
+    "c1": 1,
+    "c2": 2
+  },
+  "rotators": {},
+  "charges": {},
+  "taps": 1
+}
+```
+
+
+---
+
+
+# 58. 永久性
+
+
+「永久」とはCloudflare等の特定企業が永久に存在することを意味しない。
+
+
+コード自体を、
+
+
+- 静的
+- Web標準
+- 依存最小
+- 再現可能
+
+
+にする。
+
+
+CloudflareがなくなってもGitHub Pages、Netlify、その他Static Hostへ移行できる。
+
+
+---
+
+
+# 59. 長期互換の優先順位
+
+
+新機能追加より以下を優先する。
+
+
+1. 既存Campaignが変わらない
+2. Saveが壊れない
+3. Puzzle Codeが再現できる
+4. Daily seedが変わらない
+5. 古いGenerator Versionを保持する
+
+
+---
+
+
+# 60. 禁止事項
+
+
+- 実行時LLM API
+- Backend必須
+- Login必須
+- ガチャ
+- ライフ
+- 広告強制
+- 巨大Asset
+- 文字依存ルール
+- 物理Engine依存Logic
+- 毎年手動Stage追加前提
+- SolverとGameの別ロジック
+- Generator更新による過去Stage変更
+
+
+---
+
+
+# 61. 最大リスク
+
+
+## 61.1 Generatorは動くが面白くない
+
+
+最大のリスク。
+
+
+対策:
+
+
+- Human Rating
+- Chain Graph Generation
+- Quality Gate
+- 大量統計
+
+
+## 61.2 演出は爽快だが思考が浅い
+
+
+対策:
+
+
+- ARMOR
+- MIRROR
+- SPLITTER
+- multi-tap dependency
+- wrong first move
+- delayed chain
+
+
+## 61.3 複雑化
+
+
+対策:
+
+
+ギミック数制限。
+
+
+## 61.4 大盤面視認性
+
+
+対策:
+
+
+サイズ上限、VOID活用、情報密度制御。
+
+
+## 61.5 Generator latency
+
+
+対策:
+
+
+Worker、Prefetch、Candidate Pool、Fallback。
+
+
+## 61.6 類似問題の量産
+
+
+対策:
+
+
+Diversity Gate、Board Fingerprint、Solution Signature。
+
+
+---
+
+
+# 62. 現在までの試作で得た知見
+
+
+## 62.1 旧PUSH/PULL案
+
+
+磁力PUSH/PULL型は、
+
+
+- 1操作の結果が大きすぎる
+- 途中状態が浅い
+- 連鎖が弱い
+- 類似パズルが既に存在する
+- 爽快感が不足
+
+
+という理由から正式核から外した。
+
+
+## 62.2 CHAIN案
+
+
+COREから発光球が実際に走り、他COREへ命中して連鎖する版では、明確に爽快感が上がった。
+
+
+## 62.3 演出知見
+
+
+単なる光線描画だけでは不十分。
+
+
+プレイヤーが**「何かが盤面を移動している」**と感じる必要がある。
+
+
+## 62.4 盤面知見
+
+
+正方形固定より、Wide / Diamond / Cross / Ring / Irregular等の方が「次の盤面を見たい」という期待につながる。
+
+
+## 62.5 ギミック知見
+
+
+MIRRORとSPLITTERは、見た目とロジックが一致し、連鎖演出にも寄与するため有望。
+
+
+---
+
+
+# 63. 初期Human Test
+
+
+最低10人。
+
+
+年齢・ゲーム経験を分散。
+
+
+観察:
+
+
+- 説明なしで操作できるか
+- 何をするゲームだと思ったか
+- もう1問やりたいか
+- どの瞬間が気持ちいいか
+- どの失敗が理解できなかったか
+
+
+「面白いですか？」だけを聞かない。
+
+
+---
+
+
+# 64. Alpha完成条件
+
+
+- Core Engine
+- Solver
+- Generator
+- Campaign
+- Infinite
+- Daily
+- Visible PULSE projectile
+- MIRROR
+- SPLITTER
+- ARMOR
+- BLOCK
+- VOID / Irregular Boards
+- Save
+- Hint
+
+
+---
+
+
+# 65. Beta完成条件
+
+
+- 200+ Campaign
+- Quality tuning
+- PWA
+- Offline
+- Audio
+- Accessibility
+- Mobile QA
+
+
+---
+
+
+# 66. Release条件
+
+
+- 100万Candidate QA
+- Regression pass
+- Safari確認
+- Seed compatibility
+- Save migration
+- Performance確認
+
+
+---
+
+
+# 67. GPT-6の役割
+
+
+GPT-6級モデルは以下の役割を担う。
+
+
+- Game Designer
+- Algorithm Engineer
+- Solver Engineer
+- Generator Engineer
+- QA Engineer
+- Frontend Engineer
+- UX Engineer
+- Performance Engineer
+- Code Reviewer
+
+
+ただし本番では呼び出さない。
+
+
+---
+
+
+# 68. GPT-6への最上位指示
+
+
+> あなたの仕事は大量の問題を作ることではない。
+>
+> 人間が「もう1問」と感じる良問を、AIなしで永久生成できる機械を作ることである。
+>
+> Generatorが作った問題は必ずSolverで検証すること。
+>
+> Solverで解けることと、人間にとって面白いことを混同しないこと。
+>
+> Game Logic、Solver、Generator、Rendererを分離すること。
+>
+> 同一seedは将来も同一Puzzleを生成すること。
+>
+> 本番でLLM APIを使用しないこと。
+>
+> 大連鎖は単なる結果ではなくプレイヤーへの報酬である。
+>
+> 視覚演出をゲームロジックと同等の重要度で扱うこと。
+>
+> 既存Campaign、Save、seed互換を壊さないこと。
+
+
+---
+
+
+# 69. GPT-6への実装依頼 1: Pure Logic
+
+
+```text
+PULSE CHAIN Master Design Documentを読み、まだUIを作らず以下のみ実装せよ。
+
+
+1. Formal Rules
+2. TypeScript State Model
+3. Pure Transition Engine
+4. Wave-based Pulse Simulation
+5. Normal Core
+6. Armor Core
+7. Block
+8. Mirror
+9. Splitter
+10. Void
+11. Event Timeline
+12. Deterministic State Hash
+13. Unit Tests
+
+
+同一State + 同一Tapは必ず同一結果にすること。
+Renderer、Solver、Generatorから再利用可能なPure Moduleにすること。
+```
+
+
+---
+
+
+# 70. GPT-6への実装依頼 2: Solver
+
+
+```text
+Pure Transition Engineのみを使用してBFS Solverを実装せよ。
+
+
+要件:
+- solvability
+- optimal tap
+- one optimal solution
+- winning first moves
+- solution count estimate
+- explored states
+- Hint API
+
+
+Game RuleをSolver側へ重複実装してはならない。
+```
+
+
+---
+
+
+# 71. GPT-6への実装依頼 3: Generator
+
+
+```text
+Solution-first Chain Graph Generator v0を設計・実装せよ。
+
+
+単純ランダム配置を主方式にしてはならない。
+
+
+Chain Graph
+→ Board Shape
+→ Graph Embedding
+→ Gimmick Placement
+→ Solver
+→ Difficulty
+→ Quality Gate
+
+
+の順とする。
+```
+
+
+---
+
+
+# 72. GPT-6への実装依頼 4: Massive QA
+
+
+```text
+100,000 seedの自動試験Harnessを作れ。
+
+
+CSV/JSONで、
+seed
+difficulty
+optimalTap
+winningFirstMoveRatio
+maxChain
+quality
+generationTime
+solverStates
+を出力。
+
+
+失敗Candidateを原因別に分類すること。
+```
+
+
+---
+
+
+# 73. GPT-6への実装依頼 5: Visual Client
+
+
+```text
+Visual Prototypeを作れ。
+
+
+必須:
+- PULSEは線ではなく実際に動く発光球
+- MIRRORで進路が曲がる様子を見せる
+- SPLITTERで発光球が実際に分裂
+- CORE Hit / Explodeを段階表示
+- Chain propagationを目で追える速度にする
+- CHAIN数に応じて演出を強化
+```
+
+
+---
+
+
+# 74. 最終的なゲーム定義
+
+
+PULSE CHAINとは、
+
+
+> **盤面上のひとつのCOREを選び、そこから発生するPULSEの反射・分裂・連鎖を利用し、最小限のTAPで盤面全体を消去するパズルゲーム**
+
+
+である。
+
+
+---
+
+
+# 75. 最終ビジョン
+
+
+ユーザーがゲームを開く。
+
+
+COREを1つタップする。
+
+
+COREが収縮し、起爆する。
+
+
+小さな発光球が8方向へ走る。
+
+
+MIRRORで曲がる。
+
+
+別COREへ命中する。
+
+
+ARMORの数字が減る。
+
+
+次のCOREが起爆する。
+
+
+SPLITTERへPULSEが到達し、複数方向へ分裂する。
+
+
+盤面全体へ連鎖が広がる。
+
+
+CHAIN表示が上がる。
+
+
+最後のCOREが消える。
+
+
+```text
+PERFECT CASCADE
+CHAIN ×14
+```
+
+
+NEXTを押す。
+
+
+次は全く違う形の盤面。
+
+
+しかしルールは同じ。
+
+
+Stage 100。
+
+
+Stage 1000。
+
+
+Stage 10000。
+
+
+Infinite。
+
+
+Daily。
+
+
+それでも終わらない。
+
+
+これをPULSE CHAINの完成形とする。
+
+
+---
+
+
+# 76. 成功の定義
+
+
+> **ルール説明は10秒。  
+> 最初の爽快感は30秒。  
+> 1000問遊んでも完全には極められない。  
+> そして開発者がステージを追加し続けなくても、新しい良問が生まれ続ける。**
+
+
+---
+
+
+# 77. プロジェクト標語
+
+
+> **Do not build endless content.  
+> Build a machine that creates endless good puzzles.**
+
+
+日本語:
+
+
+> **無限のコンテンツを作るな。  
+> 無限に良問を作る機械を作れ。**
