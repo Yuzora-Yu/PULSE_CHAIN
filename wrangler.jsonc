@@ -1,10 +1,13 @@
 {
+  "main": "worker/shared-404/index.mjs",
+  "services": [{"binding":"YU_ZORA_ERROR_PAGES","service":"yu-zora-main"}],
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "pulse-chain",
   "compatibility_date": "2026-09-05",
-  "assets": { "directory": "./site", "html_handling": "auto-trailing-slash", "not_found_handling": "none" },
+  "assets": { "binding": "ASSETS", "directory": "./site", "html_handling": "auto-trailing-slash", "not_found_handling": "none" },
   "env": {
     "production": {
+      "services": [{"binding":"YU_ZORA_ERROR_PAGES","service":"yu-zora-main"}],
       "name": "pulse-chain",
       "routes": [
         { "pattern": "yu-zora.com/games/PULSE_CHAIN/*", "zone_name": "yu-zora.com" },
